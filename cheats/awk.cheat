@@ -1,0 +1,76 @@
+% awk
+
+# awk 内置变量
+# ARGC               命令行参数个数(argument count, assignable)
+# ARGV               命令行参数排列(argument array, assignable; non-null members are taken as filenames)
+# ENVIRON            支持队列中系统环境变量的使用
+# FILENAME           awk浏览的文件名
+# FNR                浏览文件的记录数(ordinal number of the current record in the current file)
+# FS                 设置输入域分隔符，等价于命令行 -F选项 (regular expression used to separate fields; also settable by option -Ffs.)
+# NF                 浏览记录的域的个数(number of fields in the current record)
+# NR                 已读的记录数(ordinal number of the current record)
+# OFS                输出域分隔符(output field separator (default blank))
+# ORS                输出记录分隔符(output record separator (default newline))
+# RS                 控制记录分隔符(input record separator (default newline))
+# $0变量是指整条记录; $1表示当前行的第一个域, $2表示当前行的第二个域,......以此类推。
+# $NF是number finally,表示最后一列的信息，跟变量NF是有区别的，变量NF统计的是每行列的总数
+
+
+# awk 命令格式
+awk '动作' 文件名
+awk '条件 动作' 文件名
+awk [ -F 分隔符 ] [ -v var=变量 ] [ '待匹配字符串' 或者 指定文件 -f progfile ] [ 查询文件，可以指定多个 file ...  ]
+
+# 查询passwd中的root，
+awk  '/root/' /etc/passwd
+
+# 分隔符':',查询passwd中的root,并输出第7个域
+awk -F: '/root/ {print $7}' /etc/passwd
+
+# 统计/etc/passwd:文件名，每行的行号，每行的列数，对应的完整行内容
+awk -F ':' '{print "filename:" FILENAME ",linenumber:" NR ",columns:" NF ",linecontent:" $0}' /etc/passwd
+
+# printf代替print，统计/etc/passwd:文件名，每行的行号，每行的列数，对应的完整行内容
+awk -F: '{printf ("filename:%10s, linenumber:%3s,column:%3s,content:%3f\n",FILENAME,NR,NF,$0)}' /etc/passwd
+
+# 打印 /etc/passwd 第二行信息
+awk -F: 'NR==2{print "filename:" FILENAME,$0}' /etc/passwd
+
+# 过滤目录
+ls -lF | awk '/^d/'
+
+# 指定特定的分隔符，查询第一列
+awk -F ":" '{print $1}' /etc/passwd
+
+# 指定特定的分隔符，查询最后一列
+awk -F ":" '{print $NF}' /etc/passwd
+
+# 指定特定的分隔符，打印第一列和最后一列
+awk -F ":" '{print $1, $NF}' /etc/passwd
+
+# 指定特定的分隔符，查询倒数第二列
+awk -F ":" '{print $NF-1}' /etc/passwd
+
+# 获取第12到31行的第一列的信息
+awk -F ":"  '{if(NR<31 && NR >12) print $1; else print $2}' /etc/passwd
+
+# 多分隔符的使用,使用分隔符:和/，条件是：NR == 12，"\n" 双引号中内容原样输出
+awk -F "[:/]" 'NR == 12 {print $0,"\n",$1}' /etc/passwd
+
+# 查看最近登录最多的IP信息
+last | awk '{S[$3]++} END{for(a in S ) {print S[a],a}}' |uniq| sort -rh
+
+# 查询多空格'[ ]+'
+ifconfig |grep eth* | awk -F '[ ]+' '{print $1}'
+
+# 利用变量统计
+ls -l|awk '{if($5>100){count++; sum+=$5}} {print "Count:" count,"Sum: " sum}'
+
+# 利用变量统计，只显示最后一行
+ls -l|awk '{if($5>100){count++; sum+=$5}} END{print "Count:" count,"Sum: " sum}'
+
+# 统计行数,同 'cat /etc/passwd|wc -l'
+awk -F: '{count++;} END{print count}' /etc/passwd
+
+# 显示行号和字段信息
+awk -F ':' 'BEGIN {count=0;} {name[count] = $1;count++;}; END{for (i = 0; i < NR; i++) print i, name[i]}' /etc/passwd
