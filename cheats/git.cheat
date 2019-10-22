@@ -1,1 +1,155 @@
-# 用户 用户组 权限分配
+% git
+
+# 克隆仓库并重新命名目录
+git clone https://github.com/libgit2/libgit2 mylibgit
+
+# 初始化项目
+git init
+
+# 跟踪文件和修改
+# 添加当前目录中文件
+git add .
+# 添加指定文件
+git add 文件名
+# 使用通配符
+git add *.txt
+
+# 查看修改文件
+# 查看详情的信息
+git status
+# 查看简短信息
+git status –short
+git status -s
+
+# 查看文件的修改内容
+git diff fileName
+
+# 提交
+git commit -m “提交注释”
+
+# push 分支
+# 最全的命令
+
+git push <1-远程主机名> <2-本地分支名> : <3-远程分支名>
+# 省略(3-远程分支名),根据2-本地分支的追踪关系判断出(3-远程分支名).
+git push <1-远程主机名> <2-本地分支名>
+
+# 省略 2和3选项, <2-本地分支名>：就是当前分支；<3-远程分支名>:和本地分支有追踪关系的远程分支
+git push <1-远程主机名>
+
+# 省略 1、2、3选项，<1-远程主机名>: 只有一个(1-远程主机名), <2-本地分支名>：就是当前分支；<3-远程分支名>: 和本地分支有追踪关系的远程分支
+git push
+
+# 推送所有本地分支到origin主机
+git push –all origin
+
+# 删除master分支，等同于 git push origin –delete master
+git push origin :master
+# 设置当前分支的追踪关系
+git push -u origin master 或 git push –set-upstream origin master
+
+## 分支操作
+# 创建分支
+git branch <分支名>
+# 查看所有分支(本地和远程分支)
+git branch -a
+
+# 查看远程分支
+git branch -r
+
+# 切换本地分支
+git checkout <分支名>
+
+# checkout远程分支到本地
+git checkout -b newBranch origin/newBranch
+
+# 删除本地分支
+git branch -d <分支名>
+
+# 删除远程分支
+git push origin –delete <分支名>
+
+# 重命名本地分支
+git branch -m
+
+参数：
+-d 或 –delete：删除
+-D 或 –delete –force的快捷键
+-f 或 –force：强制
+-m 或 –move：移动或重命名
+-M 或 –move –force的快捷键
+-r 或 –remote：远程分支
+-a 或 –all：所有分支
+
+## 拉取数据
+# 拉取指定分支的数据
+git fetch <远程主机名> <分支名>
+
+# 拉取所有分支的数据,fetch从服务器上抓取本地没有的数据时，它并不会修改工作目录中的内容。 它只会获取数据然后让你自己合并。
+git fetch <远程主机名>
+
+## merge分支
+# merge分支01-切换到master分支
+git checkout master
+# merge分支02-合并dev分支到当前分支
+git merge dev
+
+## 拉取并合并 pull
+git pull <远程主机> <远程分支> : <本地分支>
+git pull <远程主机> <分支名(远程和本地同名)>
+
+# 等同于：git fetch master + git merge FETCH_HEAD
+git pull origin master
+
+# 查看提交历史
+git log
+
+# 每次修改的文件列表, 显示状态
+git log –name-status
+
+# 每次修改的文件列表
+git log –name-only
+
+# 每次修改的文件列表, 及文件修改的统计
+git log –stat
+
+# 每次修改的文件列表
+git whatchanged
+
+# 每次修改的文件列表, 及文件修改的统计
+git whatchanged –stat
+
+# 显示最后一次的文件改变的具体内容
+git show
+
+# 显示最后 5 次的文件改变的具体内容
+git show -5
+
+# 显示某个 commitid 改变的具体内容
+git show commitid
+
+# 查看当前分支在服务器上的最新状态
+git log -p FETCH_HEAD
+
+# 查看历史命令
+git reflog
+
+## 删除文件
+# 彻底删除文件
+git rm <文件名>
+
+#只消除跟踪，不删除文件
+git rm –cached <文件名>
+
+# 回退版本
+## 回退上一个版本
+git reset –hard HEAD^
+
+## 回退上5个版本，通过reflog查看
+git reset –hard HEAD~5
+
+# 撤销修改
+git checkout – file/git reset HEAD
+
+# tag
+git tag

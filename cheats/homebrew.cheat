@@ -1,0 +1,59 @@
+% brew
+
+# homebrew - mac
+
+# 查看brew的帮助
+brew -h
+brew –-help
+
+# 查看版本
+brew -v
+brew --version
+
+# 安装目录
+brew --repo
+
+# 安装软件
+brew install <packageName>
+
+# 安装GUI程序, app, 插件, 字体(fonts)及其他非开源应用,例如 ：firefox，iterm2
+brew cask install <packageName>
+
+# 卸载软件
+brew uninstall <packageName>
+
+# 搜索软件
+brew search <packageName>
+
+# 查看软件信息
+brew info <packageName>
+
+# 浏览器中打开软件官方首页
+brew home <packageName>
+
+# 显示已经安装软件列表
+brew list
+
+# 更新软件，把所有的Formula目录更新，并且会对本机已经安装并有更新的软件用*标明。
+brew update
+
+# 升级所有可以升级的软件
+brew upgrade
+
+# 升级某具体软件
+brew upgrade <packageName>
+
+# 清理不需要的版本和其安装包缓存
+brew cleanup
+
+# 清理单个软件不需要版本和其安装包缓存
+brew cleanup <packageName>
+
+# 查看那些已安装的程序需要更新
+brew outdated
+
+# 诊断依赖冲突等
+brew doctor
+
+# 查看包依赖
+brew deps <packageName>
